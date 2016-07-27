@@ -1,9 +1,8 @@
 package svk.sglubos.sgserialization.basic;
 
-import svk.sglubos.sgserialization.DataReader;
+import svk.sglubos.sgserialization.PrimiReader;
 
-public class BasicDataReader extends DataReader {
-
+public class BasicPrimiReader implements PrimiReader {
 	@Override
 	public byte readByte(int index, byte[] source) {
 		return source[index];
@@ -24,17 +23,11 @@ public class BasicDataReader extends DataReader {
 		return ((source[index++] & 0xFF) << 56) ^ ((source[index++] & 0xFF) << 48) ^ ((source[index++] & 0xFF) << 40) ^ ((source[index++] & 0xFF) << 32) ^ ((source[index++] & 0xFF) << 24) ^ ((source[index++] & 0xFF) << 16) ^ ((source[index++] & 0xFF) << 8) ^ (source[index] & 0xFF);
 	}
 	
-	/**
-	 * Uses {@link Float#intBitsToFloat(int)}
-	 */
 	@Override
 	public float readFloat(int index, byte[] source) {
 		return Float.intBitsToFloat(readInt(index, source));
 	}
 	
-	/**
-	 * Uses {@link Double#longBitsToDouble(double)}
-	 */
 	@Override
 	public double readDouble(int index, byte[] source) {
 		return Double.longBitsToDouble(readLong(index, source));
@@ -49,5 +42,4 @@ public class BasicDataReader extends DataReader {
 	public boolean readBoolean(int index, byte[] source) {
 		return source[index] == 1 ? true : false;
 	}
-
 }
