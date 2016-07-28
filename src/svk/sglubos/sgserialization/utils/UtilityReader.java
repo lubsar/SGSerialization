@@ -175,4 +175,13 @@ public class UtilityReader {
 	public int read2(Serializable destination, int index, byte[] source) {
 		return destination.deserialize2(index, source);
 	}
+	
+	private static final void checkIndex(int index, int size, int destinationCapacity) throws RuntimeException, IndexOutOfBoundsException {
+		if(index + size > destinationCapacity){
+			throw new RuntimeException("Not enough space in destination array");
+		}
+		if(index < 0) {
+			throw new IndexOutOfBoundsException("Index can not be less than 0");
+		}
+	}
 }
