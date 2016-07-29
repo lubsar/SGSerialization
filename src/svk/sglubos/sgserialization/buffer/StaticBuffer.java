@@ -258,6 +258,6 @@ public class StaticBuffer extends Buffer {
 
 	@Override
 	public int write(Serializable data, int index) {
-		return pointer = data.serialize(index, this.data);
+		return pointer = serializableWriter.write(data, index, this.data);
 	}
 }
