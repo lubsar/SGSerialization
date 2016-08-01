@@ -52,7 +52,7 @@ public class UtilityReader {
 		return source[index] == 1 ? true : false;
 	}
 	
-	public static byte[] readBytes(int index, int size, byte[] source) {
+	public static byte[] readBytes(int size, int index, byte[] source) {
 		checkIndex(index, size, source.length);
 		
 		byte[] data = new byte[size];
@@ -60,7 +60,7 @@ public class UtilityReader {
 		return data;
 	}
 
-	public static short[] readShorts(int index, int size, byte[] source) {
+	public static short[] readShorts(int size, int index, byte[] source) {
 		checkIndex(index, size * 2, source.length);
 		
 		short[] data = new short[size];
@@ -70,7 +70,7 @@ public class UtilityReader {
 		return data;
 	}
 
-	public static int[] readInts(int index, int size, byte[] source) {
+	public static int[] readInts(int size, int index, byte[] source) {
 		checkIndex(index, size * 4, source.length);
 		
 		int[] data = new int[size];
@@ -81,7 +81,7 @@ public class UtilityReader {
 		return data;
 	}
 
-	public static long[] readLongs(int index, int size, byte[] source) {
+	public static long[] readLongs(int size, int index, byte[] source) {
 		checkIndex(index, size * 8, source.length);
 		
 		long[] data = new long[size];
@@ -94,7 +94,7 @@ public class UtilityReader {
 		return data;
 	}
 
-	public static float[] readFloats(int index, int size, byte[] source) {
+	public static float[] readFloats(int size, int index, byte[] source) {
 		checkIndex(index, size * 4, source.length);
 		
 		float[] data = new float[size];
@@ -105,7 +105,7 @@ public class UtilityReader {
 		return data;
 	}
 
-	public static double[] readDoubles(int index, int size, byte[] source) {
+	public static double[] readDoubles(int size, int index, byte[] source) {
 		checkIndex(index, size * 8, source.length);
 		
 		double[] data = new double[size];
@@ -118,7 +118,7 @@ public class UtilityReader {
 		return data;
 	}
 
-	public static char[] readChars(int index, int size, byte[] source) {
+	public static char[] readChars(int size, int index, byte[] source) {
 		checkIndex(index, size * 2, source.length);
 		
 		char[] data = new char[size];
@@ -128,7 +128,7 @@ public class UtilityReader {
 		return data;
 	}
 
-	public static boolean[] readBooleans(int index, int size, byte[] source) {
+	public static boolean[] readBooleans(int size, int index, byte[] source) {
 		checkIndex(index, size, source.length);
 		
 		boolean[] data = new boolean[size];

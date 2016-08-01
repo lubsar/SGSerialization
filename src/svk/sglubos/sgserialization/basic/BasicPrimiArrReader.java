@@ -5,7 +5,7 @@ import svk.sglubos.sgserialization.PrimiArrReader;
 public class BasicPrimiArrReader implements PrimiArrReader {
 
 	@Override
-	public byte[] readBytes(int index, int size, byte[] source) {
+	public byte[] readBytes(int size, int index, byte[] source) {
 		assert index >= 0 : "Index cannot be less than 0";
 		assert index + size <= source.length : "Source does not contain enough data";
 		
@@ -15,7 +15,7 @@ public class BasicPrimiArrReader implements PrimiArrReader {
 	}
 
 	@Override
-	public short[] readShorts(int index, int size, byte[] source) {
+	public short[] readShorts(int size, int index, byte[] source) {
 		assert index >= 0 : "Index cannot be less than 0";
 		assert index + size * 2 <= source.length : "Source does not contain enough data";
 		
@@ -27,7 +27,7 @@ public class BasicPrimiArrReader implements PrimiArrReader {
 	}
 
 	@Override
-	public int[] readInts(int index, int size, byte[] source) {
+	public int[] readInts(int size, int index, byte[] source) {
 		assert index >= 0 : "Index cannot be less than 0";
 		assert index + size * 4 <= source.length : "Source does not contain enough data";
 		
@@ -39,7 +39,7 @@ public class BasicPrimiArrReader implements PrimiArrReader {
 	}
 
 	@Override
-	public long[] readLongs(int index, int size, byte[] source) {
+	public long[] readLongs(int size, int index, byte[] source) {
 		assert index >= 0 : "Index cannot be less than 0";
 		assert index + size * 8 <= source.length : "Source does not contain enough data";
 		
@@ -51,7 +51,7 @@ public class BasicPrimiArrReader implements PrimiArrReader {
 	}
 
 	@Override
-	public float[] readFloats(int index, int size, byte[] source) {
+	public float[] readFloats(int size, int index, byte[] source) {
 		assert index >= 0 : "Index cannot be less than 0";
 		assert index + size * 4 <= source.length : "Source does not contain enough data";
 		
@@ -63,7 +63,7 @@ public class BasicPrimiArrReader implements PrimiArrReader {
 	}
 
 	@Override
-	public double[] readDoubles(int index, int size, byte[] source) {
+	public double[] readDoubles(int size, int index, byte[] source) {
 		assert index >= 0 : "Index cannot be less than 0";
 		assert index + size * 8 <= source.length : "Source does not contain enough data";
 		
@@ -75,7 +75,7 @@ public class BasicPrimiArrReader implements PrimiArrReader {
 	}
 
 	@Override
-	public char[] readChars(int index, int size, byte[] source) {
+	public char[] readChars(int size, int index, byte[] source) {
 		assert index >= 0 : "Index cannot be less than 0";
 		assert index + size * 2 <= source.length : "Source does not contain enough data";
 		
@@ -87,7 +87,7 @@ public class BasicPrimiArrReader implements PrimiArrReader {
 	}
 
 	@Override
-	public boolean[] readBooleans(int index, int size, byte[] source) {
+	public boolean[] readBooleans(int size, int index, byte[] source) {
 		assert index >= 0 : "Index cannot be less than 0";
 		assert index + size * 1 <= source.length : "Source does not contain enough data";
 		

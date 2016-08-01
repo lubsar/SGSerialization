@@ -27,237 +27,464 @@ public class StaticBuffer extends Buffer {
 		this.primitiveArrReader = primitiveArrReader;
 		this.serializableReader = serializableReader;
 	}
-
+	
+	@Override
+	public byte readByte() {
+		return primitiveReader.readByte(pointer++, data);
+	}
+	
 	@Override
 	public byte readByte(int index) {
-		pointer += 1;
 		return primitiveReader.readByte(index, data);
 	}
-
+	
+	@Override
+	public short readShort() {
+		short tmp = primitiveReader.readShort(pointer, data);
+		pointer += 2;
+		return tmp;
+	}
+	
 	@Override
 	public short readShort(int index) {
-		pointer += 2;
 		return primitiveReader.readShort(index, data);
 	}
-
+	
+	@Override
+	public int readInt() {
+		int tmp = primitiveReader.readInt(pointer, data);
+		pointer += 4;
+		return tmp;
+	}
+	
 	@Override
 	public int readInt(int index) {
-		pointer += 4;
 		return primitiveReader.readInt(index, data);
 	}
-
+	
+	@Override
+	public long readLong() {
+		long tmp = primitiveReader.readLong(pointer, data);
+		pointer += 8;
+		return tmp;
+	}
+	
 	@Override
 	public long readLong(int index) {
-		pointer += 8;
 		return primitiveReader.readLong(index, data);
 	}
-
+	
+	@Override
+	public float readFloat() {
+		float tmp = primitiveReader.readFloat(pointer, data);
+		pointer += 4;
+		return tmp;
+	}
+	
 	@Override
 	public float readFloat(int index) {
-		pointer += 4;
 		return primitiveReader.readFloat(index, data);
 	}
-
+	
+	@Override
+	public double readDouble() {
+		double tmp = primitiveReader.readDouble(pointer, data);
+		pointer += 8;
+		return tmp;
+	}
+	
 	@Override
 	public double readDouble(int index) {
-		pointer += 8;
 		return primitiveReader.readByte(index, data);
 	}
-
+	
+	@Override
+	public char readChar() {
+		char tmp = primitiveReader.readChar(pointer, data);
+		pointer += 2;
+		return tmp;
+	}
+	
 	@Override
 	public char readChar(int index) {
-		pointer += 2;
 		return primitiveReader.readChar(index, data);
 	}
-
+	
+	@Override
+	public boolean readBoolean() {
+		return primitiveReader.readBoolean(pointer++, data);
+	}
+	
 	@Override
 	public boolean readBoolean(int index) {
-		pointer += 1;
 		return primitiveReader.readBoolean(index, data);
 	}
 	
 	@Override
-	public byte[] readBytes(int index, int size) {
+	public byte[] readBytes(int size) {
+		byte[] tmp = primitiveArrReader.readBytes(size, pointer, data);
 		pointer += size;
-		return primitiveArrReader.readBytes(index, size, data);
+		return tmp;
 	}
-
+	
 	@Override
-	public short[] readShorts(int index, int size) {
+	public byte[] readBytes(int size, int index) {
+		return primitiveArrReader.readBytes(size, index, data);
+	}
+	
+	@Override
+	public short[] readShorts(int size) {
+		short[] tmp = primitiveArrReader.readShorts(size, pointer, data);
 		pointer += size * 2;
-		return primitiveArrReader.readShorts(index, size, data);
+		return tmp;
 	}
-
+	
 	@Override
-	public int[] readInts(int index, int size) {
+	public short[] readShorts(int size, int index) {
+		return primitiveArrReader.readShorts(size, index, data);
+	}
+	
+	@Override
+	public int[] readInts(int size) {
+		int[] tmp = primitiveArrReader.readInts(size, pointer, data);
 		pointer += size * 4;
-		return primitiveArrReader.readInts(index, size, data);
+		return tmp;
 	}
-
+	
 	@Override
-	public long[] readLongs(int index, int size) {
+	public int[] readInts(int size, int index) {
+		return primitiveArrReader.readInts(size, index, data);
+	}
+	
+	@Override
+	public long[] readLongs(int size) {
+		long[] tmp = primitiveArrReader.readLongs(size, pointer, data);
 		pointer += size * 8;
-		return primitiveArrReader.readLongs(index, size, data);
+		return tmp;
 	}
-
+	
 	@Override
-	public float[] readFloats(int index, int size) {
+	public long[] readLongs(int size, int index) {
+		return primitiveArrReader.readLongs(size, index, data);
+	}
+	
+	@Override
+	public float[] readFloats(int size) {
+		float[] tmp = primitiveArrReader.readFloats(size, pointer, data);
 		pointer += size * 4;
-		return primitiveArrReader.readFloats(index, size, data);
+		return tmp;
 	}
-
+	
 	@Override
-	public double[] readDoubles(int index, int size) {
+	public float[] readFloats(int size, int index) {
+		return primitiveArrReader.readFloats(size, index, data);
+	}
+	
+	@Override
+	public double[] readDoubles(int size) {
+		double[] tmp = primitiveArrReader.readDoubles(size, pointer, data);
 		pointer += size * 8;
-		return primitiveArrReader.readDoubles(index, size, data);
+		return tmp;
 	}
-
+	
 	@Override
-	public char[] readChars(int index, int size) {
-		pointer += size * 2;
-		return primitiveArrReader.readChars(index, size, data);
+	public double[] readDoubles(int size, int index) {
+		return primitiveArrReader.readDoubles(size, index, data);
 	}
-
+	
 	@Override
-	public boolean[] readBooleans(int index, int size) {
-		this.pointer += size * 1;
-		return primitiveArrReader.readBooleans(index, size, data);
+	public char[] readChars(int size) {
+		char[] tmp = primitiveArrReader.readChars(size, pointer, data);
+		pointer += size * 4;
+		return tmp;
 	}
-
+	
+	@Override
+	public char[] readChars(int size, int index) {
+		return primitiveArrReader.readChars(size, index, data);
+	}
+	
+	@Override
+	public boolean[] readBooleans(int size) {
+		boolean[] tmp = primitiveArrReader.readBooleans(size, pointer, data);
+		pointer += size;
+		return tmp;
+	}
+	
+	@Override
+	public boolean[] readBooleans(int size, int index) {
+		return primitiveArrReader.readBooleans(size, index, data);
+	}
+	
+	@Override
+	public int read(byte[] location) {
+		return pointer = primitiveArrReader.read(location, pointer, data);
+	}
+	
 	@Override
 	public int read(byte[] location, int index) {
-		return pointer = primitiveArrReader.read(location, index, data);
+		return primitiveArrReader.read(location, index, data);
 	}
-
+	
+	@Override
+	public int read(short[] location) {
+		return pointer = primitiveArrReader.read(location, pointer, data);
+	}
+	
 	@Override
 	public int read(short[] location, int index) {
-		return pointer = primitiveArrReader.read(location, index, data);
+		return primitiveArrReader.read(location, index, data);
 	}
-
+	
+	@Override
+	public int read(int[] location) {
+		return pointer = primitiveArrReader.read(location, pointer, data);
+	}
+	
 	@Override
 	public int read(int[] location, int index) {
-		return pointer = primitiveArrReader.read(location, index, data);
+		return primitiveArrReader.read(location, index, data);
 	}
-
+	
+	@Override
+	public int read(long[] location) {
+		return pointer = primitiveArrReader.read(location, pointer, data);
+	}
+	
 	@Override
 	public int read(long[] location, int index) {
-		return pointer = primitiveArrReader.read(location, index, data);
+		return primitiveArrReader.read(location, index, data);
 	}
-
+	
+	@Override
+	public int read(float[] location) {
+		return pointer = primitiveArrReader.read(location, pointer, data);
+	}
+	
 	@Override
 	public int read(float[] location, int index) {
-		return pointer = primitiveArrReader.read(location, index, data);
+		return primitiveArrReader.read(location, index, data);
 	}
-
+	
+	@Override
+	public int read(double[] location) {
+		return pointer = primitiveArrReader.read(location, pointer, data);
+	}
+	
 	@Override
 	public int read(double[] location, int index) {
-		return pointer = primitiveArrReader.read(location, index, data);
+		return primitiveArrReader.read(location, index, data);
 	}
-
+	
+	@Override
+	public int read(char[] location) {
+		return pointer = primitiveArrReader.read(location, pointer, data);
+	}
+	
 	@Override
 	public int read(char[] location, int index) {
-		return pointer = primitiveArrReader.read(location, index, data);
+		return primitiveArrReader.read(location, index, data);
 	}
-
+	
+	@Override
+	public int read(boolean[] location) {
+		return pointer = primitiveArrReader.read(location, pointer, data);
+	}
+	
 	@Override
 	public int read(boolean[] location, int index) {
-		return pointer = primitiveArrReader.read(location, index, data);
+		return primitiveArrReader.read(location, index, data);
 	}
-
+	
 	@Override
-	public <T extends Serializable> T readSerializable(T type, int index) {
-		T serializable = serializableReader.readSerializable(type, index, data);
-		this.pointer += serializable.getSize();
+	public <T extends Serializable> T readSerializable(T type) {
+		T serializable = serializableReader.readSerializable(type, pointer, data);
+		this.pointer +=serializable.getSize();
 		return serializable;
 	}
-
+	
+	@Override
+	public <T extends Serializable> T readSerializable(T type, int index) {
+		return serializableReader.readSerializable(type, index, data);
+	}
+	
+	@Override
+	public int readSerializable2(Serializable destination) {
+		return pointer = serializableReader.readSerializable2(destination, pointer, data);
+	}
+	
 	@Override
 	public int readSerializable2(Serializable destination, int index) {
-		return pointer = serializableReader.readSerializable2(destination, index, data);
+		return serializableReader.readSerializable2(destination, index, data);
 	}
-
+	
+	@Override
+	public int write(byte data) {
+		return pointer = primitiveWriter.write(data, pointer, this.data);
+	}
+	
 	@Override
 	public int write(byte data, int index) {
-		return pointer = primitiveWriter.write(data, index, this.data);
+		return primitiveWriter.write(data, index, this.data);
 	}
-
+	
+	@Override
+	public int write(short data) {
+		return pointer = primitiveWriter.write(data, pointer, this.data);
+	}
+	
 	@Override
 	public int write(short data, int index) {
-		return pointer = primitiveWriter.write(data, index, this.data);
+		return primitiveWriter.write(data, index, this.data);
 	}
-
+	
+	@Override
+	public int write(int data) {
+		return pointer = primitiveWriter.write(data, pointer, this.data);
+	}
+	
 	@Override
 	public int write(int data, int index) {
-		return pointer = primitiveWriter.write(data, index, this.data);
+		return primitiveWriter.write(data, index, this.data);
 	}
-
+	
+	@Override
+	public int write(long data) {
+		return pointer = primitiveWriter.write(data, pointer, this.data);
+	}
+	
 	@Override
 	public int write(long data, int index) {
-		return pointer = primitiveWriter.write(data, index, this.data);
+		return primitiveWriter.write(data, index, this.data);
 	}
-
+	
+	@Override
+	public int write(float data) {
+		return pointer = primitiveWriter.write(data, pointer, this.data);
+	}
+	
 	@Override
 	public int write(float data, int index) {
-		return pointer = primitiveWriter.write(data, index, this.data);
+		return primitiveWriter.write(data, index, this.data);
 	}
-
+	
+	@Override
+	public int write(double data) {
+		return pointer = primitiveWriter.write(data, pointer, this.data);
+	}
+	
 	@Override
 	public int write(double data, int index) {
-		return pointer = primitiveWriter.write(data, index, this.data);
+		return primitiveWriter.write(data, index, this.data);
 	}
-
+	
+	@Override
+	public int write(char data) {
+		return pointer = primitiveWriter.write(data, pointer, this.data);
+	}
+	
 	@Override
 	public int write(char data, int index) {
-		return pointer = primitiveWriter.write(data, index, this.data);
+		return primitiveWriter.write(data, index, this.data);
 	}
-
+	
+	@Override
+	public int write(boolean data) {
+		return pointer = primitiveWriter.write(data, pointer, this.data);
+	}
+	
 	@Override
 	public int write(boolean data, int index) {
-		return pointer = primitiveWriter.write(data, index, this.data);
+		return primitiveWriter.write(data, index, this.data);
 	}
-
+	
+	@Override
+	public int write(byte[] data) {
+		return pointer = primitiveArrWriter.write(data, pointer, this.data);
+	}
+	
 	@Override
 	public int write(byte[] data, int index) {
-		return pointer = primitiveArrWriter.write(data, index, this.data);
+		return primitiveArrWriter.write(data, index, this.data);
 	}
-
+	
+	@Override
+	public int write(short[] data) {
+		return pointer = primitiveArrWriter.write(data, pointer, this.data);
+	}
+	
 	@Override
 	public int write(short[] data, int index) {
-		return pointer = primitiveArrWriter.write(data, index, this.data);
+		return primitiveArrWriter.write(data, index, this.data);
 	}
-
+	
+	@Override
+	public int write(int[] data) {
+		return pointer = primitiveArrWriter.write(data, pointer, this.data);
+	}
+	
 	@Override
 	public int write(int[] data, int index) {
-		return pointer = primitiveArrWriter.write(data, index, this.data);
+		return primitiveArrWriter.write(data, index, this.data);
 	}
-
+	
+	@Override
+	public int write(long[] data) {
+		return pointer = primitiveArrWriter.write(data, pointer, this.data);
+	}
+	
 	@Override
 	public int write(long[] data, int index) {
-		return pointer = primitiveArrWriter.write(data, index, this.data);
+		return primitiveArrWriter.write(data, index, this.data);
 	}
-
+	
+	@Override
+	public int write(float[] data) {
+		return pointer = primitiveArrWriter.write(data, pointer, this.data);
+	}
+	
 	@Override
 	public int write(float[] data, int index) {
-		return pointer = primitiveArrWriter.write(data, index, this.data);
+		return primitiveArrWriter.write(data, index, this.data);
 	}
-
+	
+	@Override
+	public int write(double[] data) {
+		return pointer = primitiveArrWriter.write(data, pointer, this.data);
+	}
+	
 	@Override
 	public int write(double[] data, int index) {
-		return pointer = primitiveArrWriter.write(data, index, this.data);
+		return primitiveArrWriter.write(data, index, this.data);
 	}
-
+	
+	@Override
+	public int write(char[] data) {
+		return pointer = primitiveArrWriter.write(data, pointer, this.data);
+	}
+	
 	@Override
 	public int write(char[] data, int index) {
-		return pointer = primitiveArrWriter.write(data, index, this.data);
+		return primitiveArrWriter.write(data, index, this.data);
 	}
-
+	
+	@Override
+	public int write(boolean[] data) {
+		return pointer = primitiveArrWriter.write(data, pointer, this.data);
+	}
+	
 	@Override
 	public int write(boolean[] data, int index) {
-		return pointer = primitiveArrWriter.write(data, index, this.data);
+		return primitiveArrWriter.write(data, index, this.data);
 	}
-
+	
+	@Override
+	public int write(Serializable data) {
+		return pointer = serializableWriter.write(data, pointer, this.data);
+	}
+	
 	@Override
 	public int write(Serializable data, int index) {
-		return pointer = serializableWriter.write(data, index, this.data);
+		return serializableWriter.write(data, index, this.data);
 	}
 }
