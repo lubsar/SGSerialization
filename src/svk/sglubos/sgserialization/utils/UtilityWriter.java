@@ -1,5 +1,7 @@
 package svk.sglubos.sgserialization.utils;
 
+import svk.sglubos.sgserialization.Serializable;
+
 public class UtilityWriter {
 	public static int write(byte data, int index, byte[] destination) {
 		checkIndex(index, 1, destination.length);
@@ -185,12 +187,29 @@ public class UtilityWriter {
 		return index;
 	}
 	
+	public static int write(Serializable data, int index, byte[] destination) {
+		checkIndex(index, data.getSize(), destination.length);
+		
+		return data.serialize(index, destination);
+	}
+
+	public static int write(Serializable[] data, int index, byte[] destination) {
+		checkIndex(index, data[0].getSize() * data.length, destination.length);
+		
+		for(Serializable s : data) {
+			s.serialize(index, destination);
+			index += s.getSize();
+		}
+		
+		return index;
+	}
+	
 	private static final void checkIndex(int index, int size, int destinationCapacity) throws RuntimeException, IndexOutOfBoundsException {
 		if(index + size > destinationCapacity){
 			throw new RuntimeException("Not enough space in destination array");
 		}
 		if(index < 0) {
-			throw new IndexOutOfBoundsException("Index can not be less than 0");
+			throw new IllegalArgumentException("Index can not be less than 0");
 		}
 	}
 }

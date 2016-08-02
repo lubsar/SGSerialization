@@ -9,6 +9,10 @@ public abstract class Buffer implements Readable, Writable{
 	protected int pointer;
 	
 	public Buffer(int capacity) {
+		if(capacity < 1) {
+			throw new IllegalArgumentException("Capacity must be higher than 0");
+		}
+		
 		data = new byte[capacity];
 	}
 	
@@ -17,6 +21,10 @@ public abstract class Buffer implements Readable, Writable{
 	}
 	
 	public void setPointer(int pointer) {
+		if(pointer < 0) {
+			throw new IllegalArgumentException("Pointer cannot be negative");
+		}
+		
 		this.pointer = pointer;
 	}
 	
@@ -41,6 +49,7 @@ public abstract class Buffer implements Readable, Writable{
 	public abstract int write(char[] data);
 	public abstract int write(boolean[] data);
 	public abstract int write(Serializable data);
+	public abstract int write(Serializable[] data);
 	
 	public abstract byte readByte();
 	public abstract short readShort();
@@ -68,4 +77,6 @@ public abstract class Buffer implements Readable, Writable{
 	public abstract int read(boolean[] location);
 	public abstract <T extends Serializable> T readSerializable(T type);
 	public abstract int readSerializable2(Serializable destination);
+	public abstract <T extends Serializable> T[] readSerializables(T[] type);
+	public abstract int readSerializables2(Serializable[] destination);
 }

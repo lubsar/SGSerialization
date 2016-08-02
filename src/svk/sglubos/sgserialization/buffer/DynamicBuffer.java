@@ -8,7 +8,12 @@ import svk.sglubos.sgserialization.Serializable;
 import svk.sglubos.sgserialization.SerializableReader;
 import svk.sglubos.sgserialization.SerializableWriter;
 
-public class StaticBuffer extends Buffer {
+public class DynamicBuffer extends Buffer {
+	private int expansion;
+	private boolean expandByRate = false;
+	private float expansionRate = 1.0f;
+	private boolean expandAsNeeded = false;
+	
 	private PrimiWriter primitiveWriter;
 	private PrimiArrWriter primitiveArrWriter;
 	private SerializableWriter serializableWriter;
@@ -16,16 +21,106 @@ public class StaticBuffer extends Buffer {
 	private PrimiArrReader primitiveArrReader;
 	private SerializableReader serializableReader;
 
-	public StaticBuffer(int capacity, PrimiWriter primitiveWriter, PrimiArrWriter primitiveArrWriter,
+	public DynamicBuffer(int capacity, int expansion, PrimiWriter primitiveWriter, PrimiArrWriter primitiveArrWriter,
 			SerializableWriter serializableWriter, PrimiReader primitiveReader, PrimiArrReader primitiveArrReader,
 			SerializableReader serializableReader) {
 		super(capacity);
+		this.expansion = expansion;
 		this.primitiveWriter = primitiveWriter;
 		this.primitiveArrWriter = primitiveArrWriter;
 		this.serializableWriter = serializableWriter;
 		this.primitiveReader = primitiveReader;
 		this.primitiveArrReader = primitiveArrReader;
 		this.serializableReader = serializableReader;
+	}
+	
+	public DynamicBuffer(int capacity, float expansionRate, PrimiWriter primitiveWriter, PrimiArrWriter primitiveArrWriter,
+			SerializableWriter serializableWriter, PrimiReader primitiveReader, PrimiArrReader primitiveArrReader,
+			SerializableReader serializableReader) {
+		super(capacity);
+		this.expansionRate = expansionRate;
+		this.expandByRate = true;
+		this.primitiveWriter = primitiveWriter;
+		this.primitiveArrWriter = primitiveArrWriter;
+		this.serializableWriter = serializableWriter;
+		this.primitiveReader = primitiveReader;
+		this.primitiveArrReader = primitiveArrReader;
+		this.serializableReader = serializableReader;
+	}
+	
+	public DynamicBuffer(int capacity, PrimiWriter primitiveWriter, PrimiArrWriter primitiveArrWriter,
+			SerializableWriter serializableWriter, PrimiReader primitiveReader, PrimiArrReader primitiveArrReader,
+			SerializableReader serializableReader) {
+		super(capacity);
+		this.expandAsNeeded = true;
+		this.primitiveWriter = primitiveWriter;
+		this.primitiveArrWriter = primitiveArrWriter;
+		this.serializableWriter = serializableWriter;
+		this.primitiveReader = primitiveReader;
+		this.primitiveArrReader = primitiveArrReader;
+		this.serializableReader = serializableReader;
+	}
+	
+	public float getExpansionRate() {
+		return expansionRate;
+	}
+	
+	public void setExpansionRate(float expansionRate) {
+		if(expansionRate < 1) {
+			throw new IllegalArgumentException("Expansionrate must be more than 0");
+		}
+		
+		this.expansionRate = expansionRate;
+	}
+	
+	public boolean isExpandedByRate() {
+		return expandByRate;
+	}
+	
+	public void setExpandByRate(boolean expandByRate) {
+		this.expandByRate = expandByRate;
+	}
+	
+	public boolean isExpandedAsNeeded() {
+		return expandAsNeeded;
+	}
+	
+	public void setExpandAsNeeded(boolean expandAsNeeded) {
+		this.expandAsNeeded = expandAsNeeded;
+	}
+	
+	public int getExpansion() {
+		return expansion;
+	}
+	
+	public void setExpansion(int expansion) {
+		if(expansion < 1) {
+			throw new IllegalArgumentException("Expansion must be more than 0");
+		}
+		
+		this.expansion = expansion;
+	}
+	
+	public void expand() {
+		if(expandByRate) {
+			expandArray((int) (data.length * expansionRate));
+		} else {
+			expandArray(expansion);
+		}
+	}
+	
+	private void expand2(int requiredSpace) {
+		if(expandAsNeeded) {
+			expandArray(requiredSpace);
+		} else {
+			expand();
+		}
+	}
+	
+	private void expandArray(int expansion) {
+		byte[] expanded = new byte[data.length + expansion];
+		System.arraycopy(data, 0, expanded, 0, data.length);
+		data = expanded;
 	}
 	
 	@Override
@@ -299,7 +394,7 @@ public class StaticBuffer extends Buffer {
 	@Override
 	public <T extends Serializable> T readSerializable(T type) {
 		T serializable = serializableReader.readSerializable(type, pointer, data);
-		pointer += serializable.getSize();
+		this.pointer +=serializable.getSize();
 		return serializable;
 	}
 	
@@ -342,174 +437,276 @@ public class StaticBuffer extends Buffer {
 	
 	@Override
 	public int write(byte data) {
+		if(pointer + 1 <= this.data.length) {
+			expand2(1);
+		}
 		return pointer = primitiveWriter.write(data, pointer, this.data);
 	}
 	
 	@Override
 	public int write(byte data, int index) {
+		if(index + 1 <= this.data.length) {
+			expand2(1);
+		}
 		return primitiveWriter.write(data, index, this.data);
 	}
 	
 	@Override
 	public int write(short data) {
+		if(pointer + 2 <= this.data.length) {
+			expand2(2);
+		}
 		return pointer = primitiveWriter.write(data, pointer, this.data);
 	}
 	
 	@Override
 	public int write(short data, int index) {
+		if(index + 2 <= this.data.length) {
+			expand2(2);
+		}
 		return primitiveWriter.write(data, index, this.data);
 	}
 	
 	@Override
 	public int write(int data) {
+		if(pointer + 4 <= this.data.length) {
+			expand2(4);
+		}
 		return pointer = primitiveWriter.write(data, pointer, this.data);
 	}
 	
 	@Override
 	public int write(int data, int index) {
+		if(index + 4 <= this.data.length) {
+			expand2(4);
+		}
 		return primitiveWriter.write(data, index, this.data);
 	}
 	
 	@Override
 	public int write(long data) {
+		if(pointer + 8 <= this.data.length) {
+			expand2(8);
+		}
 		return pointer = primitiveWriter.write(data, pointer, this.data);
 	}
 	
 	@Override
 	public int write(long data, int index) {
+		if(index + 8 <= this.data.length) {
+			expand2(8);
+		}
 		return primitiveWriter.write(data, index, this.data);
 	}
 	
 	@Override
 	public int write(float data) {
+		if(pointer + 4 <= this.data.length) {
+			expand2(4);
+		}
 		return pointer = primitiveWriter.write(data, pointer, this.data);
 	}
 	
 	@Override
 	public int write(float data, int index) {
+		if(index + 4 <= this.data.length) {
+			expand2(4);
+		}
 		return primitiveWriter.write(data, index, this.data);
 	}
 	
 	@Override
 	public int write(double data) {
+		if(pointer + 8 <= this.data.length) {
+			expand2(8);
+		}
 		return pointer = primitiveWriter.write(data, pointer, this.data);
 	}
 	
 	@Override
 	public int write(double data, int index) {
+		if(index + 8 <= this.data.length) {
+			expand2(8);
+		}
 		return primitiveWriter.write(data, index, this.data);
 	}
 	
 	@Override
 	public int write(char data) {
+		if(pointer + 2 <= this.data.length) {
+			expand2(2);
+		}
 		return pointer = primitiveWriter.write(data, pointer, this.data);
 	}
 	
 	@Override
 	public int write(char data, int index) {
+		if(index + 2 <= this.data.length) {
+			expand2(2);
+		}
 		return primitiveWriter.write(data, index, this.data);
 	}
 	
 	@Override
 	public int write(boolean data) {
+		if(pointer + 1 <= this.data.length) {
+			expand2(1);
+		}
 		return pointer = primitiveWriter.write(data, pointer, this.data);
 	}
 	
 	@Override
 	public int write(boolean data, int index) {
+		if(index + 1 <= this.data.length) {
+			expand2(1);
+		}
 		return primitiveWriter.write(data, index, this.data);
 	}
 	
 	@Override
 	public int write(byte[] data) {
+		if(pointer + data.length <= this.data.length) {
+			expand2(data.length);
+		}
 		return pointer = primitiveArrWriter.write(data, pointer, this.data);
 	}
 	
 	@Override
 	public int write(byte[] data, int index) {
+		if(index + data.length <= this.data.length) {
+			expand2(data.length);
+		}
 		return primitiveArrWriter.write(data, index, this.data);
 	}
 	
 	@Override
 	public int write(short[] data) {
+		if(pointer + data.length * 2 <= this.data.length) {
+			expand2(data.length * 2);
+		}
 		return pointer = primitiveArrWriter.write(data, pointer, this.data);
 	}
 	
 	@Override
 	public int write(short[] data, int index) {
+		if(index + data.length * 2 <= this.data.length) {
+			expand2(data.length * 2);
+		}
 		return primitiveArrWriter.write(data, index, this.data);
 	}
 	
 	@Override
 	public int write(int[] data) {
+		if(pointer + data.length * 4 <= this.data.length) {
+			expand2(data.length * 4);
+		}
 		return pointer = primitiveArrWriter.write(data, pointer, this.data);
 	}
 	
 	@Override
 	public int write(int[] data, int index) {
+		if(index + data.length * 4 <= this.data.length) {
+			expand2(data.length * 4);
+		}		
 		return primitiveArrWriter.write(data, index, this.data);
 	}
 	
 	@Override
 	public int write(long[] data) {
+		if(pointer + data.length * 8 <= this.data.length) {
+			expand2(data.length * 8);
+		}
 		return pointer = primitiveArrWriter.write(data, pointer, this.data);
 	}
 	
 	@Override
 	public int write(long[] data, int index) {
+		if(index + data.length * 8 <= this.data.length) {
+			expand2(data.length * 8);
+		}
 		return primitiveArrWriter.write(data, index, this.data);
 	}
 	
 	@Override
 	public int write(float[] data) {
+		if(pointer + data.length * 4 <= this.data.length) {
+			expand2(data.length * 4);
+		}
 		return pointer = primitiveArrWriter.write(data, pointer, this.data);
 	}
 	
 	@Override
 	public int write(float[] data, int index) {
+		if(index + data.length * 4 <= this.data.length) {
+			expand2(data.length * 4);
+		}
 		return primitiveArrWriter.write(data, index, this.data);
 	}
 	
 	@Override
 	public int write(double[] data) {
+		if(pointer + data.length * 8 <= this.data.length) {
+			expand2(data.length * 8);
+		}
 		return pointer = primitiveArrWriter.write(data, pointer, this.data);
 	}
 	
 	@Override
 	public int write(double[] data, int index) {
+		if(index + data.length * 8 <= this.data.length) {
+			expand2(data.length * 8);
+		}
 		return primitiveArrWriter.write(data, index, this.data);
 	}
 	
 	@Override
 	public int write(char[] data) {
+		if(pointer + data.length * 2 <= this.data.length) {
+			expand2(data.length * 2);
+		}
 		return pointer = primitiveArrWriter.write(data, pointer, this.data);
 	}
 	
 	@Override
 	public int write(char[] data, int index) {
+		if(index + data.length * 2 <= this.data.length) {
+			expand2(data.length * 2);
+		}
 		return primitiveArrWriter.write(data, index, this.data);
 	}
 	
 	@Override
 	public int write(boolean[] data) {
+		if(pointer + data.length <= this.data.length) {
+			expand2(data.length);
+		}
 		return pointer = primitiveArrWriter.write(data, pointer, this.data);
 	}
 	
 	@Override
 	public int write(boolean[] data, int index) {
+		if(index + data.length <= this.data.length) {
+			expand2(data.length);
+		}
 		return primitiveArrWriter.write(data, index, this.data);
 	}
 	
 	@Override
 	public int write(Serializable data) {
+		if(pointer + data.getSize() <= this.data.length) {
+			expand2(data.getSize());
+		}
 		return pointer = serializableWriter.write(data, pointer, this.data);
 	}
 	
 	@Override
 	public int write(Serializable data, int index) {
+		if(index + data.getSize() <= this.data.length) {
+			expand2(data.getSize());
+		}
 		return serializableWriter.write(data, index, this.data);
 	}
-
+	
 	@Override
 	public int write(Serializable[] data, int index) {
 		return serializableWriter.write(data, index, this.data);
@@ -517,6 +714,9 @@ public class StaticBuffer extends Buffer {
 
 	@Override
 	public int write(Serializable[] data) {
+		if(pointer + data[0].getSize() * data.length <= this.data.length) {
+			expand2(data[0].getSize() * data.length);
+		}
 		return pointer = serializableWriter.write(data, pointer, this.data);
 	}
 }

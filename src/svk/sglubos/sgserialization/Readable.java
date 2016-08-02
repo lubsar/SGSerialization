@@ -27,4 +27,6 @@ public interface Readable {
 	public int read(boolean[] location, int index);
 	public <T extends Serializable> T readSerializable(T type, int index);
 	public int readSerializable2(Serializable destination, int index);
+	public <T extends Serializable> T[] readSerializables(T[] type,int index);
+	public int readSerializables2(Serializable[] destination, int index);
 }

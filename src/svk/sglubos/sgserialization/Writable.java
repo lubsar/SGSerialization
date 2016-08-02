@@ -18,4 +18,5 @@ public interface Writable {
 	public int write(char[] data, int index);
 	public int write(boolean[] data, int index);
 	public int write(Serializable data, int index);
+	public int write(Serializable[] data, int index);
 }

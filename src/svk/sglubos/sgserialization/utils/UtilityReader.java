@@ -228,12 +228,34 @@ public class UtilityReader {
 		return destination.deserialize2(index, source);
 	}
 	
+	public static <T extends Serializable> T[] readSerializables(T[] type, int index, byte[] source) {
+		checkIndex(index, type[0].getSize() * type.length, source.length);
+		
+		for(T t : type) {
+			t.deserialize(index, source);
+			index += t.getSize();
+		}
+		
+		return type;
+	}
+
+	public static int readSerializables2(Serializable[] destination, int index, byte[] source) {
+		checkIndex(index, destination[0].getSize() * destination.length, source.length);
+		
+		for(Serializable s : destination) {
+			s.deserialize(index, source);
+			index += s.getSize();
+		}
+		
+		return index;
+	}
+	
 	private static final void checkIndex(int index, int size, int sourceCapacity) throws RuntimeException, IndexOutOfBoundsException {
 		if(index + size > sourceCapacity){
-			throw new RuntimeException("Not enough space in destination array");
+			throw new RuntimeException("Not enough space in destination");
 		}
 		if(index < 0) {
-			throw new IndexOutOfBoundsException("Index can not be less than 0");
+			throw new IllegalArgumentException("Index can not be less than 0");
 		}
 	}
 }
