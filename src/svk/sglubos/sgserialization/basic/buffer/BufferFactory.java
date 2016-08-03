@@ -24,43 +24,43 @@ public class BufferFactory {
 	private static final BasicPrimiArrReader defPrimiArrReader = new BasicPrimiArrReader();
 	private static final BasicSerializableReader defSerializableReader = new BasicSerializableReader();
 
-	public StaticBuffer createStaticBuffer(int capacity) {
+	public static StaticBuffer createStaticBuffer(int capacity) {
 		return new StaticBuffer(capacity, defPrimiWriter, defPrimiArrWriter, defSerializableWriter, defPrimiReader,
 				defPrimiArrReader, defSerializableReader);
 	}
 
-	public StaticBuffer createStaticBuffer(int capacity, PrimiWriter primitiveWriter, PrimiArrWriter primitiveArrWriter,
+	public static StaticBuffer createStaticBuffer(int capacity, PrimiWriter primitiveWriter, PrimiArrWriter primitiveArrWriter,
 			SerializableWriter serializableWriter, PrimiReader primitiveReader, PrimiArrReader primitiveArrReader,
 			SerializableReader serializableReader) {
 		return new StaticBuffer(capacity, primitiveWriter, primitiveArrWriter, serializableWriter, primitiveReader,
 				primitiveArrReader, serializableReader);
 	}
 	
-	public DynamicBuffer createDynamicBuffer(int capacity, int expansion) {
+	public static DynamicBuffer createDynamicBuffer(int capacity, int expansion) {
 		return new DynamicBuffer(capacity, expansion, defPrimiWriter, defPrimiArrWriter, defSerializableWriter, defPrimiReader, defPrimiArrReader, defSerializableReader);
 	}
 	
-	public DynamicBuffer createDynamicBuffer(int capacity, int expansion, PrimiWriter primitiveWriter, PrimiArrWriter primitiveArrWriter,
+	public static DynamicBuffer createDynamicBuffer(int capacity, int expansion, PrimiWriter primitiveWriter, PrimiArrWriter primitiveArrWriter,
 			SerializableWriter serializableWriter, PrimiReader primitiveReader, PrimiArrReader primitiveArrReader,
 			SerializableReader serializableReader) {
 		return new DynamicBuffer(capacity, expansion, primitiveWriter, primitiveArrWriter, serializableWriter, primitiveReader, primitiveArrReader, serializableReader);
 	}
 	
-	public DynamicBuffer createDynamicBuffer(int capacity, float expansionRate) {
+	public static DynamicBuffer createDynamicBuffer(int capacity, float expansionRate) {
 		return new DynamicBuffer(capacity, expansionRate, defPrimiWriter, defPrimiArrWriter, defSerializableWriter, defPrimiReader, defPrimiArrReader, defSerializableReader);
 	}
 	
-	public DynamicBuffer createDynamicBuffer(int capacity, float expansionRate, PrimiWriter primitiveWriter, PrimiArrWriter primitiveArrWriter,
+	public static DynamicBuffer createDynamicBuffer(int capacity, float expansionRate, PrimiWriter primitiveWriter, PrimiArrWriter primitiveArrWriter,
 			SerializableWriter serializableWriter, PrimiReader primitiveReader, PrimiArrReader primitiveArrReader,
 			SerializableReader serializableReader) {
 		return new DynamicBuffer(capacity, expansionRate, primitiveWriter, primitiveArrWriter, serializableWriter, primitiveReader, primitiveArrReader, serializableReader);
 	}
 	
-	public DynamicBuffer createDynamicBuffer(int capacity) {
+	public static DynamicBuffer createDynamicBuffer(int capacity) {
 		return new DynamicBuffer(capacity, defPrimiWriter, defPrimiArrWriter, defSerializableWriter, defPrimiReader, defPrimiArrReader, defSerializableReader);
 	}
 	
-	public DynamicBuffer createDynamicBuffer(int capacity, PrimiWriter primitiveWriter, PrimiArrWriter primitiveArrWriter,
+	public static DynamicBuffer createDynamicBuffer(int capacity, PrimiWriter primitiveWriter, PrimiArrWriter primitiveArrWriter,
 			SerializableWriter serializableWriter, PrimiReader primitiveReader, PrimiArrReader primitiveArrReader,
 			SerializableReader serializableReader) {
 		return new DynamicBuffer(capacity, primitiveWriter, primitiveArrWriter, serializableWriter, primitiveReader, primitiveArrReader, serializableReader);

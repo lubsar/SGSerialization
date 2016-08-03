@@ -1,8 +1,8 @@
 package svk.sglubos.sgserialization.buffer;
 
-import svk.sglubos.sgserialization.Writable;
 import svk.sglubos.sgserialization.Readable;
 import svk.sglubos.sgserialization.Serializable;
+import svk.sglubos.sgserialization.Writable;
 
 public abstract class Buffer implements Readable, Writable{
 	protected byte[] data;
@@ -26,6 +26,18 @@ public abstract class Buffer implements Readable, Writable{
 		}
 		
 		this.pointer = pointer;
+	}
+	
+	public void clean() {
+		for(int i = 0; i < data.length; i++) {
+			data[i] = 0;
+		}
+		pointer = 0;
+	}
+	
+	public void clean(int capacity) {
+		data = new byte[capacity];
+		pointer = 0;
 	}
 	
 	public byte[] getData() {
