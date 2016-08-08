@@ -16,13 +16,13 @@ import svk.sglubos.sgserialization.buffer.DynamicBuffer;
 import svk.sglubos.sgserialization.buffer.StaticBuffer;
 
 public class BufferFactory {
-	private static final BasicPrimiWriter defPrimiWriter = new BasicPrimiWriter();
-	private static final BasicPrimiArrWriter defPrimiArrWriter = new BasicPrimiArrWriter();
-	private static final BasicSerializableWriter defSerializableWriter = new BasicSerializableWriter();
+	private static final BasicPrimiWriter defPrimiWriter = BasicPrimiWriter.get();
+	private static final BasicPrimiArrWriter defPrimiArrWriter = BasicPrimiArrWriter.get();
+	private static final BasicSerializableWriter defSerializableWriter = BasicSerializableWriter.get();
 
-	private static final BasicPrimiReader defPrimiReader = new BasicPrimiReader();
-	private static final BasicPrimiArrReader defPrimiArrReader = new BasicPrimiArrReader();
-	private static final BasicSerializableReader defSerializableReader = new BasicSerializableReader();
+	private static final BasicPrimiReader defPrimiReader = BasicPrimiReader.get();
+	private static final BasicPrimiArrReader defPrimiArrReader = BasicPrimiArrReader.get();
+	private static final BasicSerializableReader defSerializableReader = BasicSerializableReader.get();
 
 	public static StaticBuffer createStaticBuffer(int capacity) {
 		return new StaticBuffer(capacity, defPrimiWriter, defPrimiArrWriter, defSerializableWriter, defPrimiReader,
