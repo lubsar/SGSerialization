@@ -1,6 +1,6 @@
 # SGSerialization
 
-Serialization abstract library with basic implementation and other features.
+Abstract serialization library with basic implementation and other features.
 
 **Features**
 - Abstract layer for custom implementation of serialization of primitives and primitive array writers and readers
