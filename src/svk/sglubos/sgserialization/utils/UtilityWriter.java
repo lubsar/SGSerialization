@@ -209,6 +209,10 @@ public class UtilityWriter {
 		return index;
 	}
 	
+	public static int write(String string, int index, byte[] destination) {
+		return write(string.toCharArray(), index, destination);
+	}
+	
 	public static int write(Serializable data, int index, byte[] destination) {
 		checkIndex(index, data.getSize(), destination.length);
 		

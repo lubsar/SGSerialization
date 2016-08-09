@@ -159,7 +159,11 @@ public class UtilityReader {
 		}
 		return data;
 	}
-
+	
+	public static String readString(int length, int index, byte[] source) {
+		return new String(readChars(length, index, source));
+	}
+	
 	public static int read(byte[] location, int index, byte[] source) {
 		checkIndex(index, location.length, source.length);
 		
