@@ -13,4 +13,4 @@ Abstract serialization library written in Java programming language. Contains ba
 - all readers and writers are implemented
 - the most significant bytes are read/writen first
 
-**Licensed under [Read more words!](LICENSE.md)**
+**Licensed under [MIT License!](LICENSE.md)**
