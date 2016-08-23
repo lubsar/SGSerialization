@@ -22,13 +22,17 @@
 
 package svk.sglubos.sgserialization;
 
-public interface PrimiArrWriter {
-	public int write(byte[] data, int index, byte[] destination);
-	public int write(short[] data, int index, byte[] destination);
-	public int write(int[] data, int index, byte[] destination);
-	public int write(long[] data, int index, byte[] destination);
-	public int write(float[] data, int index, byte[] destination);
-	public int write(double[] data, int index, byte[] destination);
-	public int write(char[] data, int index, byte[] destination);
-	public int write(boolean[] data, int index, byte[] destination);
+public interface StructedSerializer {
+	//Serializable
+	public int write(Serializable data, int index, byte[] destination);
+	public int write(Serializable[] data, int index, byte[] destination);
+	
+	public <T extends Serializable> T readSerializable(T type,int index, byte[] source);
+	public int readSerializable2(Serializable destination, int index, byte[] source);
+	public <T extends Serializable> T[] readSerializables(T[] type,int index, byte[] source);
+	public int readSerializables2(Serializable[] destination, int index, byte[] source);
+	
+	//String
+	public int write(String data, int index, byte[] destination);
+	public String readString(int length, int index, byte[] location);
 }

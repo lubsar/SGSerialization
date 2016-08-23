@@ -20,22 +20,44 @@
  * SOFTWARE.
  */
 
+
 package svk.sglubos.sgserialization.basic;
 
 import svk.sglubos.sgserialization.Serializable;
-import svk.sglubos.sgserialization.SerializableReader;
+import svk.sglubos.sgserialization.StructedSerializer;
 
-public class BasicSerializableReader implements SerializableReader {
-	private static BasicSerializableReader instance = null; 
+public class BasicStructedSerializer implements StructedSerializer {
+	private static BasicStructedSerializer INSTANCE = null;
 	
-	private BasicSerializableReader() {}
+	private BasicStructedSerializer() {}
 	
-	public static BasicSerializableReader get() {
-		if(instance == null) {
-			instance = new BasicSerializableReader();
+	public static BasicStructedSerializer get() {
+		if(INSTANCE == null) {
+			INSTANCE = new BasicStructedSerializer();
 		}
 		
-		return instance;
+		return INSTANCE;
+	}
+	
+	@Override
+	public int write(Serializable data, int index, byte[] destination) {
+		assert index >= 0 : "Index cannot be less than 0";
+		assert index + data.getSize() <= destination.length : "Destionation does not have enough capacity";
+		
+		return data.serialize(index, destination);
+	}
+
+	@Override
+	public int write(Serializable[] data, int index, byte[] destination) {
+		assert index >= 0 : "Index cannot be less than 0";
+		assert index + data[0].getSize() * data.length <= destination.length : "Destionation does not have enough capacity";
+		
+		for(Serializable s : data) {
+			s.serialize(index, destination);
+			index += s.getSize();
+		}
+		
+		return index;
 	}
 	
 	@Override
@@ -78,5 +100,23 @@ public class BasicSerializableReader implements SerializableReader {
 		}
 		
 		return index;
+	}
+
+	@Override
+	public int write(String data, int index, byte[] destination) {
+		assert index >= 0 : "Index cannot be less than 0";
+		byte[] dataBytes = data.getBytes();
+		assert index + dataBytes.length <= destination.length : "Destionation does not have enough capacity";
+		
+		System.arraycopy(dataBytes, 0, destination, index, dataBytes.length);
+		
+		return index + dataBytes.length;
+	}
+
+	@Override
+	public String readString(int byteLength, int index, byte[] source) {
+		assert index >= 0 : "Index cannot be less than 0";
+		assert index + byteLength <= source.length : "Source does not contain enough data";
+		return new String(source, index, byteLength);
 	}
 }

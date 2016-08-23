@@ -22,7 +22,34 @@
 
 package svk.sglubos.sgserialization;
 
-public interface PrimiArrReader {
+public interface PrimiSerializer {
+	public int write(byte data, int index, byte[] destination);
+	public int write(short data, int index, byte[] destination);
+	public int write(int data, int index, byte[] destination);
+	public int write(long data, int index, byte[] destination);
+	public int write(float data, int index, byte[] destination);
+	public int write(double data, int index, byte[] destination);
+	public int write(char data, int index, byte[] destination);
+	public int write(boolean data, int index, byte[] destination);
+	
+	public byte readByte(int index, byte[] source);
+	public short readShort(int index, byte[] source);
+	public int readInt(int index, byte[] source);
+	public long readLong(int index, byte[] source);
+	public float readFloat(int index, byte[] source);
+	public double readDouble(int index, byte[] source);
+	public char readChar(int index, byte[] source);
+	public boolean readBoolean(int index, byte[] source);
+	
+	public int write(byte[] data, int index, byte[] destination);
+	public int write(short[] data, int index, byte[] destination);
+	public int write(int[] data, int index, byte[] destination);
+	public int write(long[] data, int index, byte[] destination);
+	public int write(float[] data, int index, byte[] destination);
+	public int write(double[] data, int index, byte[] destination);
+	public int write(char[] data, int index, byte[] destination);
+	public int write(boolean[] data, int index, byte[] destination);
+	
 	public byte[] readBytes(int size, int index, byte[] source);
 	public short[] readShorts(int size, int index, byte[] source);
 	public int[] readInts(int size, int index, byte[] source);
