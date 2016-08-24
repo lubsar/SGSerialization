@@ -34,5 +34,5 @@ public interface StructedSerializer {
 	
 	//String
 	public int write(String data, int index, byte[] destination);
-	public String readString(int length, int index, byte[] location);
+	public String readString(int length, int index, byte[] source);
 }

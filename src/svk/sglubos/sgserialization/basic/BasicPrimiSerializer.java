@@ -25,9 +25,9 @@ package svk.sglubos.sgserialization.basic;
 import svk.sglubos.sgserialization.PrimiSerializer;
 
 public class BasicPrimiSerializer implements PrimiSerializer {
-	private static BasicPrimiSerializer INSTANCE = null;
+	protected static BasicPrimiSerializer INSTANCE = null;
 	
-	private BasicPrimiSerializer() {}
+	protected BasicPrimiSerializer() {}
 	
 	public static BasicPrimiSerializer get() {
 		if(INSTANCE == null) {
@@ -319,6 +319,7 @@ public class BasicPrimiSerializer implements PrimiSerializer {
 	@Override
 	public byte[] readBytes(int size, int index, byte[] source) {
 		assert index >= 0 : "Index cannot be less than 0";
+		assert size >= 0 : "Array size cannot be less than 0";
 		assert index + size <= source.length : "Source does not contain enough data";
 		
 		byte[] data = new byte[size];
@@ -329,6 +330,7 @@ public class BasicPrimiSerializer implements PrimiSerializer {
 	@Override
 	public short[] readShorts(int size, int index, byte[] source) {
 		assert index >= 0 : "Index cannot be less than 0";
+		assert size >= 0 : "Array size cannot be less than 0";
 		assert index + size * 2 <= source.length : "Source does not contain enough data";
 		
 		short[] data = new short[size];
@@ -341,6 +343,7 @@ public class BasicPrimiSerializer implements PrimiSerializer {
 	@Override
 	public int[] readInts(int size, int index, byte[] source) {
 		assert index >= 0 : "Index cannot be less than 0";
+		assert size >= 0 : "Array size cannot be less than 0";
 		assert index + size * 4 <= source.length : "Source does not contain enough data";
 		
 		int[] data = new int[size];
@@ -353,6 +356,7 @@ public class BasicPrimiSerializer implements PrimiSerializer {
 	@Override
 	public long[] readLongs(int size, int index, byte[] source) {
 		assert index >= 0 : "Index cannot be less than 0";
+		assert size >= 0 : "Array size cannot be less than 0";
 		assert index + size * 8 <= source.length : "Source does not contain enough data";
 		
 		long[] data = new long[size];
@@ -365,6 +369,7 @@ public class BasicPrimiSerializer implements PrimiSerializer {
 	@Override
 	public float[] readFloats(int size, int index, byte[] source) {
 		assert index >= 0 : "Index cannot be less than 0";
+		assert size >= 0 : "Array size cannot be less than 0";
 		assert index + size * 4 <= source.length : "Source does not contain enough data";
 		
 		float[] data = new float[size];
@@ -377,6 +382,7 @@ public class BasicPrimiSerializer implements PrimiSerializer {
 	@Override
 	public double[] readDoubles(int size, int index, byte[] source) {
 		assert index >= 0 : "Index cannot be less than 0";
+		assert size >= 0 : "Array size cannot be less than 0";
 		assert index + size * 8 <= source.length : "Source does not contain enough data";
 		
 		double[] data = new double[size];
@@ -389,6 +395,7 @@ public class BasicPrimiSerializer implements PrimiSerializer {
 	@Override
 	public char[] readChars(int size, int index, byte[] source) {
 		assert index >= 0 : "Index cannot be less than 0";
+		assert size >= 0 : "Array size cannot be less than 0";
 		assert index + size * 2 <= source.length : "Source does not contain enough data";
 		
 		char[] data = new char[size];
@@ -401,6 +408,7 @@ public class BasicPrimiSerializer implements PrimiSerializer {
 	@Override
 	public boolean[] readBooleans(int size, int index, byte[] source) {
 		assert index >= 0 : "Index cannot be less than 0";
+		assert size >= 0 : "Array size cannot be less than 0";
 		assert index + size * 1 <= source.length : "Source does not contain enough data";
 		
 		boolean[] data = new boolean[size];

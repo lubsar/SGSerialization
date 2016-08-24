@@ -29,7 +29,7 @@ import svk.sglubos.sgserialization.StructedSerializer;
 public class BasicStructedSerializer implements StructedSerializer {
 	private static BasicStructedSerializer INSTANCE = null;
 	
-	private BasicStructedSerializer() {}
+	protected BasicStructedSerializer() {}
 	
 	public static BasicStructedSerializer get() {
 		if(INSTANCE == null) {
@@ -116,6 +116,7 @@ public class BasicStructedSerializer implements StructedSerializer {
 	@Override
 	public String readString(int byteLength, int index, byte[] source) {
 		assert index >= 0 : "Index cannot be less than 0";
+		assert byteLength >= 0 : "String length cannot be less than 0";
 		assert index + byteLength <= source.length : "Source does not contain enough data";
 		return new String(source, index, byteLength);
 	}
