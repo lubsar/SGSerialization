@@ -22,6 +22,8 @@
 
 package svk.sglubos.sgserialization;
 
+import java.nio.charset.Charset;
+
 public interface Readable {
 	public byte readByte(int index);
 	public short readShort(int index);
@@ -31,6 +33,7 @@ public interface Readable {
 	public double readDouble(int index);
 	public char readChar(int index);
 	public boolean readBoolean(int index);
+	
 	public byte[] readBytes(int size, int index);
 	public short[] readShorts(int size, int index);
 	public int[] readInts(int size, int index);
@@ -47,8 +50,12 @@ public interface Readable {
 	public int read(double[] location, int index);
 	public int read(char[] location, int index);
 	public int read(boolean[] location, int index);
+	
 	public <T extends Serializable> T readSerializable(T type, int index);
 	public int readSerializable2(Serializable destination, int index);
 	public <T extends Serializable> T[] readSerializables(T[] type,int index);
 	public int readSerializables2(Serializable[] destination, int index);
+	
+	public String readString(int byteLength, int index);
+	public String readString(int byteLength, Charset charset, int index);
 }

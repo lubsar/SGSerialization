@@ -22,6 +22,8 @@
 
 package svk.sglubos.sgserialization.buffer;
 
+import java.nio.charset.Charset;
+
 import svk.sglubos.sgserialization.Readable;
 import svk.sglubos.sgserialization.Serializable;
 import svk.sglubos.sgserialization.Writable;
@@ -86,8 +88,12 @@ public abstract class Buffer implements Readable, Writable {
 	public abstract int write(double[] data);
 	public abstract int write(char[] data);
 	public abstract int write(boolean[] data);
+	
 	public abstract int write(Serializable data);
 	public abstract int write(Serializable[] data);
+	
+	public abstract int write(String string);
+	public abstract int write(String string, Charset charset);
 	
 	public abstract byte readByte();
 	public abstract short readShort();
@@ -113,8 +119,12 @@ public abstract class Buffer implements Readable, Writable {
 	public abstract int read(double[] location);
 	public abstract int read(char[] location);
 	public abstract int read(boolean[] location);
+	
 	public abstract <T extends Serializable> T readSerializable(T type);
 	public abstract int readSerializable2(Serializable destination);
 	public abstract <T extends Serializable> T[] readSerializables(T[] type);
 	public abstract int readSerializables2(Serializable[] destination);
+	
+	public abstract String readString(int byteLength);
+	public abstract String readString(int byteLength, Charset charset);
 }

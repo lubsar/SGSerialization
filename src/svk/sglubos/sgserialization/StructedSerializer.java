@@ -22,17 +22,21 @@
 
 package svk.sglubos.sgserialization;
 
+import java.nio.charset.Charset;
+
 public interface StructedSerializer {
 	//Serializable
 	public int write(Serializable data, int index, byte[] destination);
 	public int write(Serializable[] data, int index, byte[] destination);
-	
 	public <T extends Serializable> T readSerializable(T type,int index, byte[] source);
 	public int readSerializable2(Serializable destination, int index, byte[] source);
+	
 	public <T extends Serializable> T[] readSerializables(T[] type,int index, byte[] source);
 	public int readSerializables2(Serializable[] destination, int index, byte[] source);
 	
 	//String
 	public int write(String data, int index, byte[] destination);
-	public String readString(int length, int index, byte[] source);
+	public int write(String data, Charset charset, int index, byte[] destination);
+	public String readString(int byteLength, int index, byte[] source);
+	public String readString(int byteLength, Charset charset, int index, byte[] source);
 }

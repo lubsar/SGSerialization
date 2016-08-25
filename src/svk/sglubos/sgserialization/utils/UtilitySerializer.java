@@ -22,9 +22,14 @@
 
 package svk.sglubos.sgserialization.utils;
 
+import java.nio.charset.Charset;
+import java.nio.charset.UnsupportedCharsetException;
+
 import svk.sglubos.sgserialization.Serializable;
 
 public class UtilitySerializer {
+	
+	private UtilitySerializer(){};
 	
 	public static int write(byte data, int index, byte[] destination) {
 		checkIndex(index, 1, destination.length);
@@ -210,10 +215,6 @@ public class UtilitySerializer {
 		return index;
 	}
 	
-	public static int write(String string, int index, byte[] destination) {
-		return write(string.getBytes(), index, destination);
-	}
-	
 	public static int write(Serializable data, int index, byte[] destination) {
 		checkIndex(index, data.getSize(), destination.length);
 		
@@ -229,6 +230,25 @@ public class UtilitySerializer {
 		}
 		
 		return index;
+	}
+	
+	public static int write(String data, int index, byte[] destination) {
+		byte[] dataBytes = data.getBytes();
+		checkIndex(index, dataBytes.length, destination.length);
+		
+		System.arraycopy(dataBytes, 0, destination, index, dataBytes.length);
+		
+		return index + dataBytes.length;
+	}
+	
+	public static int write(String data, Charset charset, int index, byte[] destination) {
+		byte[] dataBytes = data.getBytes(charset);
+		checkIndex(index, dataBytes.length, destination.length);
+		checkCharset(charset);
+		
+		System.arraycopy(dataBytes, 0, destination, index, dataBytes.length);
+		
+		return index + dataBytes.length;
 	}
 	
 	public static byte readByte(int index, byte[] source) {
@@ -281,6 +301,7 @@ public class UtilitySerializer {
 	
 	public static byte[] readBytes(int size, int index, byte[] source) {
 		checkIndex(index, size, source.length);
+		checkLength(size);
 		
 		byte[] data = new byte[size];
 		System.arraycopy(source, index, data, 0, size);
@@ -289,6 +310,7 @@ public class UtilitySerializer {
 
 	public static short[] readShorts(int size, int index, byte[] source) {
 		checkIndex(index, size * 2, source.length);
+		checkLength(size);
 		
 		short[] data = new short[size];
 		for (int i = 0; i < size; i++) {
@@ -299,6 +321,7 @@ public class UtilitySerializer {
 
 	public static int[] readInts(int size, int index, byte[] source) {
 		checkIndex(index, size * 4, source.length);
+		checkLength(size);
 		
 		int[] data = new int[size];
 		for (int i = 0; i < size; i++) {
@@ -310,6 +333,7 @@ public class UtilitySerializer {
 
 	public static long[] readLongs(int size, int index, byte[] source) {
 		checkIndex(index, size * 8, source.length);
+		checkLength(size);
 		
 		long[] data = new long[size];
 		for (int i = 0; i < size; i++) {
@@ -323,6 +347,7 @@ public class UtilitySerializer {
 
 	public static float[] readFloats(int size, int index, byte[] source) {
 		checkIndex(index, size * 4, source.length);
+		checkLength(size);
 		
 		float[] data = new float[size];
 		for (int i = 0; i < size; i++) {
@@ -334,6 +359,7 @@ public class UtilitySerializer {
 
 	public static double[] readDoubles(int size, int index, byte[] source) {
 		checkIndex(index, size * 8, source.length);
+		checkLength(size);
 		
 		double[] data = new double[size];
 		for (int i = 0; i < size; i++) {
@@ -347,6 +373,7 @@ public class UtilitySerializer {
 
 	public static char[] readChars(int size, int index, byte[] source) {
 		checkIndex(index, size * 2, source.length);
+		checkLength(size);
 		
 		char[] data = new char[size];
 		for (int i = 0; i < size; i++) {
@@ -357,18 +384,13 @@ public class UtilitySerializer {
 
 	public static boolean[] readBooleans(int size, int index, byte[] source) {
 		checkIndex(index, size, source.length);
+		checkLength(size);
 		
 		boolean[] data = new boolean[size];
 		for (int i = 0; i < size; i++) {
 			data[i] = source[index] == 1 ? true : false;
 		}
 		return data;
-	}
-	
-	public static String readString(int byteLength, int index, byte[] source) {
-		checkIndex(index, byteLength, source.length);
-		
-		return new String(source, index, byteLength);
 	}
 	
 	public static int read(byte[] location, int index, byte[] source) {
@@ -483,12 +505,42 @@ public class UtilitySerializer {
 		return index;
 	}
 	
+	public String readString(int byteLength, int index, byte[] source) {
+		checkIndex(index, byteLength, source.length);
+		checkLength(byteLength);
+		
+		return new String(source, index, byteLength);
+	}
+	
+	public String readString(int byteLength, Charset charset, int index, byte[] source) {
+		checkIndex(index, byteLength, source.length);
+		checkLength(byteLength);
+		checkCharset(charset);
+		
+		return new String(source, index, byteLength, charset);
+	}
+	
 	private static final void checkIndex(int index, int size, int sourceCapacity) throws RuntimeException, IndexOutOfBoundsException {
 		if(index + size > sourceCapacity){
 			throw new RuntimeException("Not enough space in destination or not enough data in source");
 		}
 		if(index < 0) {
 			throw new IllegalArgumentException("Index can not be less than 0");
+		}
+	}
+	
+	private static final void checkCharset(Charset charset) {
+		if(charset == null) {
+			throw new NullPointerException("Charset cannot be null");
+		}
+		if(!Charset.isSupported(charset.name())) {
+			throw new UnsupportedCharsetException(charset.name());
+		}
+	}
+	
+	private static final void checkLength(int length) {
+		if(length < 0){
+			throw new IllegalArgumentException("Length cannot be less than 0");
 		}
 	}
 }

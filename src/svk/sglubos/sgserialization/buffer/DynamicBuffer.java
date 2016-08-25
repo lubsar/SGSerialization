@@ -22,6 +22,8 @@
 
 package svk.sglubos.sgserialization.buffer;
 
+import java.nio.charset.Charset;
+
 import svk.sglubos.sgserialization.PrimiSerializer;
 import svk.sglubos.sgserialization.Serializable;
 import svk.sglubos.sgserialization.StructedSerializer;
@@ -432,6 +434,32 @@ public class DynamicBuffer extends Buffer {
 	}
 	
 	@Override
+	public String readString(int bytelength, int index) {
+		return structedSerializer.readString(bytelength, index, data);
+	}
+	
+	@Override
+	public String readString(int bytelength) {
+		String string = structedSerializer.readString(bytelength, pointer, data);
+		pointer += bytelength;
+		
+		return string;
+	}
+	
+	@Override
+	public String readString(int bytelength, Charset charset, int index) {
+		return structedSerializer.readString(bytelength, charset, index, data);
+	}
+	
+	@Override
+	public String readString(int bytelength, Charset charset) {
+		String string = structedSerializer.readString(bytelength, charset, pointer, data);
+		pointer += bytelength;
+		
+		return string;
+	}
+	
+	@Override
 	public int write(byte data) {
 		if(pointer + 1 <= this.data.length) {
 			expand2(1);
@@ -705,14 +733,62 @@ public class DynamicBuffer extends Buffer {
 	
 	@Override
 	public int write(Serializable[] data, int index) {
-		return structedSerializer.write(data, index, this.data);
+		for(Serializable element : data) {
+			index = write(element, index);
+		}
+		
+		return index;
 	}
 
 	@Override
 	public int write(Serializable[] data) {
-		if(pointer + data[0].getSize() * data.length <= this.data.length) {
-			expand2(data[0].getSize() * data.length);
+		for(Serializable element : data) {
+			pointer = write(element);
 		}
+		
+		return pointer;
+	}
+	
+	@Override
+	public int write(String data, int index) {
+		int size = data.getBytes().length;
+		if(index + size <= this.data.length) {
+			expand2(size);
+		}
+		
+		return structedSerializer.write(data, index, this.data);
+	}
+	
+	@Override
+	public int write(String data) {
+		int size = data.getBytes().length;
+		if(pointer + size <= this.data.length) {
+			expand2(size);
+		}
+		
 		return pointer = structedSerializer.write(data, pointer, this.data);
 	}
+	
+	@Override
+	public int write(String data, Charset charset, int index) {
+		int size = data.getBytes().length;
+		if(pointer + size <= this.data.length) {
+			expand2(size);
+		}
+		
+		return structedSerializer.write(data, charset, index, this.data);
+	}
+	
+	
+	@Override
+	public int write(String data, Charset charset) {
+		int size = data.getBytes().length;
+		if(pointer + size <= this.data.length) {
+			expand2(size);
+		}
+		
+		return pointer = structedSerializer.write(data, charset, pointer, this.data);
+	}
+
+	
 }

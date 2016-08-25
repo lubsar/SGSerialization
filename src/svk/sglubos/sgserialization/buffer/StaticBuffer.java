@@ -22,6 +22,8 @@
 
 package svk.sglubos.sgserialization.buffer;
 
+import java.nio.charset.Charset;
+
 import svk.sglubos.sgserialization.PrimiSerializer;
 import svk.sglubos.sgserialization.Serializable;
 import svk.sglubos.sgserialization.StructedSerializer;
@@ -349,6 +351,32 @@ public class StaticBuffer extends Buffer {
 	}
 	
 	@Override
+	public String readString(int bytelength, int index) {
+		return structedSerializer.readString(bytelength, index, data);
+	}
+	
+	@Override
+	public String readString(int bytelength) {
+		String string = structedSerializer.readString(bytelength, pointer, data);
+		pointer += bytelength;
+		
+		return string;
+	}
+	
+	@Override
+	public String readString(int bytelength, Charset charset, int index) {
+		return structedSerializer.readString(bytelength, charset, index, data);
+	}
+	
+	@Override
+	public String readString(int bytelength, Charset charset) {
+		String string = structedSerializer.readString(bytelength, charset, pointer, data);
+		pointer += bytelength;
+		
+		return string;
+	}
+	
+	@Override
 	public int write(byte data) {
 		return pointer = primiSerializer.write(data, pointer, this.data);
 	}
@@ -526,5 +554,26 @@ public class StaticBuffer extends Buffer {
 	@Override
 	public int write(Serializable[] data) {
 		return pointer = structedSerializer.write(data, pointer, this.data);
+	}
+	
+	@Override
+	public int write(String data, int index) {
+		return structedSerializer.write(data, index, this.data);
+	}
+	
+	@Override
+	public int write(String data) {
+		return pointer = structedSerializer.write(data, pointer, this.data);
+	}
+	
+	@Override
+	public int write(String data, Charset charset, int index) {
+		return structedSerializer.write(data, charset, index, this.data);
+	}
+	
+	
+	@Override
+	public int write(String data, Charset charset) {
+		return pointer = structedSerializer.write(data, charset, pointer, this.data);
 	}
 }

@@ -22,6 +22,8 @@
 
 package svk.sglubos.sgserialization;
 
+import java.nio.charset.Charset;
+
 public interface Writable {
 	public int write(byte data, int index);
 	public int write(short data, int index);
@@ -31,6 +33,7 @@ public interface Writable {
 	public int write(double data, int index);
 	public int write(char data, int index);
 	public int write(boolean data, int index);
+	
 	public int write(byte[] data, int index);
 	public int write(short[] data, int index);
 	public int write(int[] data, int index);
@@ -39,6 +42,10 @@ public interface Writable {
 	public int write(double[] data, int index);
 	public int write(char[] data, int index);
 	public int write(boolean[] data, int index);
+	
 	public int write(Serializable data, int index);
 	public int write(Serializable[] data, int index);
+	
+	public int write(String data, int index);
+	public int write(String data, Charset charset, int index);
 }

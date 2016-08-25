@@ -23,6 +23,8 @@
 
 package svk.sglubos.sgserialization.basic;
 
+import java.nio.charset.Charset;
+
 import svk.sglubos.sgserialization.Serializable;
 import svk.sglubos.sgserialization.StructedSerializer;
 
@@ -112,12 +114,37 @@ public class BasicStructedSerializer implements StructedSerializer {
 		
 		return index + dataBytes.length;
 	}
-
+	
+	@Override
+	public int write(String data, Charset charset, int index, byte[] destination) {
+		assert index >= 0 : "Index cannot be less than 0";
+		byte[] dataBytes = data.getBytes(charset);
+		assert index + dataBytes.length <= destination.length : "Destionation does not have enough capacity";
+		assert charset != null : "Charset cannot be null";
+		assert Charset.isSupported(charset.name()) : "Charset is not supported";
+		
+		System.arraycopy(dataBytes, 0, destination, index, dataBytes.length);
+		
+		return index + dataBytes.length;
+	}
+	
 	@Override
 	public String readString(int byteLength, int index, byte[] source) {
 		assert index >= 0 : "Index cannot be less than 0";
 		assert byteLength >= 0 : "String length cannot be less than 0";
 		assert index + byteLength <= source.length : "Source does not contain enough data";
+		
 		return new String(source, index, byteLength);
+	}
+	
+	@Override
+	public String readString(int byteLength, Charset charset, int index, byte[] source) {
+		assert index >= 0 : "Index cannot be less than 0";
+		assert byteLength >= 0 : "String length cannot be less than 0";
+		assert index + byteLength <= source.length : "Source does not contain enough data";
+		assert charset != null : "Charset cannot be null";
+		assert Charset.isSupported(charset.name()) : "Charset is not supported";
+		
+		return new String(source, index, byteLength, charset);
 	}
 }
