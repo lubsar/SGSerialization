@@ -1,6 +1,6 @@
 /* The MIT License (MIT)
  *
- * Copyright (c) 2016 Ľubomír Hlavko
+ * Copyright (c) 2016-2017 Ľubomír Hlavko
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -31,6 +31,11 @@ import svk.sglubos.sgserialization.Writable;
 public abstract class Buffer implements Readable, Writable {
 	protected byte[] data;
 	protected int pointer;
+	
+	public Buffer(byte[] data) {
+		this(data.length);
+		System.arraycopy(data, 0, this.data, 0, data.length);
+	}
 	
 	public Buffer(int capacity) {
 		if(capacity < 1) {

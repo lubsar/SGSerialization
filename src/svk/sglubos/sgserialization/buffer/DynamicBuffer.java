@@ -1,6 +1,6 @@
 /* The MIT License (MIT)
  *
- * Copyright (c) 2016 Ľubomír Hlavko
+ * Copyright (c) 2016-2017 Ľubomír Hlavko
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -54,6 +54,28 @@ public class DynamicBuffer extends Buffer {
 	
 	public DynamicBuffer(int capacity, PrimiSerializer primiSerializer, StructedSerializer structedSerializer) {
 		super(capacity);
+		this.expandAsNeeded = true;
+		this.primiSerializer = primiSerializer;
+		this.structedSerializer = structedSerializer;
+	}
+	
+	public DynamicBuffer(byte[] data, int expansion, PrimiSerializer primiSerializer, StructedSerializer structedSerializer) {
+		super(data);
+		this.expansion = expansion;
+		this.primiSerializer = primiSerializer;
+		this.structedSerializer = structedSerializer;
+	}
+	
+	public DynamicBuffer(byte[] data, float expansionRate, PrimiSerializer primiSerializer, StructedSerializer structedSerializer) {
+		super(data);
+		this.expansionRate = expansionRate;
+		this.expandByRate = true;
+		this.primiSerializer = primiSerializer;
+		this.structedSerializer = structedSerializer;
+	}
+	
+	public DynamicBuffer(byte[] data, PrimiSerializer primiSerializer, StructedSerializer structedSerializer) {
+		super(data);
 		this.expandAsNeeded = true;
 		this.primiSerializer = primiSerializer;
 		this.structedSerializer = structedSerializer;

@@ -38,6 +38,12 @@ public class StaticBuffer extends Buffer {
 		this.structedSerializer = structedSerializer;
 	}
 	
+	public StaticBuffer(byte[] data, PrimiSerializer primiSerializer, StructedSerializer structedSerializer) {
+		super(data);
+		this.primiSerializer = primiSerializer;
+		this.structedSerializer = structedSerializer;
+	}
+	
 	@Override
 	public byte readByte() {
 		return primiSerializer.readByte(pointer++, data);
