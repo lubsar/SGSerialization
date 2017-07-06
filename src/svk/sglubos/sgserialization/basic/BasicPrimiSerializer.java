@@ -164,7 +164,7 @@ public class BasicPrimiSerializer implements PrimiSerializer {
 		assert index >= 0 : "Index cannot be less than 0";
 		assert index + 8 <= source.length : "Source does not contain enough data";
 		
-		return ((source[index++] & 0xFF) << 56) ^ ((source[index++] & 0xFF) << 48) ^ ((source[index++] & 0xFF) << 40) ^ ((source[index++] & 0xFF) << 32) ^ ((source[index++] & 0xFF) << 24) ^ ((source[index++] & 0xFF) << 16) ^ ((source[index++] & 0xFF) << 8) ^ (source[index] & 0xFF);
+		return ((source[index++] & 0xFFl) << 56) ^ ((source[index++] & 0xFFl) << 48) ^ ((source[index++] & 0xFFl) << 40) ^ ((source[index++] & 0xFFl) << 32) ^ ((source[index++] & 0xFFl) << 24) ^ ((source[index++] & 0xFFl) << 16) ^ ((source[index++] & 0xFFl) << 8) ^ (source[index] & 0xFFl);
 	}
 	
 	@Override
@@ -361,7 +361,7 @@ public class BasicPrimiSerializer implements PrimiSerializer {
 		
 		long[] data = new long[size];
 		for(int i = 0; i < size; i++) {
-			data[i] = ((source[index++] & 0xFF) << 56) ^ ((source[index++] & 0xFF) << 48) ^ ((source[index++] & 0xFF) << 40) ^ ((source[index++] & 0xFF) << 32) ^ ((source[index++] & 0xFF) << 24) ^ ((source[index++] & 0xFF) << 16) ^ ((source[index++] & 0xFF) << 8) ^ (source[index++] & 0xFF);
+			data[i] = ((source[index++] & 0xFFl) << 56) ^ ((source[index++] & 0xFFl) << 48) ^ ((source[index++] & 0xFFl) << 40) ^ ((source[index++] & 0xFFl) << 32) ^ ((source[index++] & 0xFFl) << 24) ^ ((source[index++] & 0xFFl) << 16) ^ ((source[index++] & 0xFFl) << 8) ^ (source[index++] & 0xFFl);
 		}
 		return data;
 	}
