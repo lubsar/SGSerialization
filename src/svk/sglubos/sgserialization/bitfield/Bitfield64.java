@@ -24,7 +24,7 @@ package svk.sglubos.sgserialization.bitfield;
 
 import svk.sglubos.sgserialization.utils.UtilitySerializer;
 
-public class Bitfield64 extends Bitfield {
+public class Bitfield64 implements Bitfield {
 	public long data;
 	
 	public Bitfield64() {}

@@ -24,7 +24,7 @@ package svk.sglubos.sgserialization.bitfield;
 
 import svk.sglubos.sgserialization.utils.UtilitySerializer;
 
-public class Bitfield32 extends Bitfield {
+public class Bitfield32 implements Bitfield {
 	public int data;
 	
 	public Bitfield32() {}

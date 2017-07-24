@@ -22,7 +22,7 @@
 
 package svk.sglubos.sgserialization.bitfield;
 
-public class Bitfield8 extends Bitfield {
+public class Bitfield8 implements Bitfield {
 	public byte data;
 	
 	public Bitfield8() {}
